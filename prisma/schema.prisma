@@ -11,7 +11,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:daddy@localhost:5432/sap-db?schema=public"
+   url = "postgresql://firsttask:Employee_1@employee-task.postgres.database.azure.com:5432/employee-task?schema=public"
 }
 
 enum TaskType {
