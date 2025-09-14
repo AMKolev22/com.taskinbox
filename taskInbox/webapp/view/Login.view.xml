@@ -1,0 +1,52 @@
+<mvc:View
+    controllerName="taskInbox.controller.Login"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    displayBlock="true"
+    xmlns:core="sap.ui.core">
+    <Page
+        backgroundDesign="Solid">
+        <customHeader>
+            <core:Fragment
+                fragmentName="taskInbox.view.fragments.PageHeader"
+                type="XML" />
+        </customHeader>
+        <content>
+            <VBox
+                fitContainer="true"
+                alignItems="Center"
+                justifyContent="Center">
+                <items>
+                    <Input
+                        id="uid"
+                        placeholder="Email"
+                        width="250px"
+                        value="{user>/email}" />
+                    <Input
+                        id="uname"
+                        placeholder="Name"
+                        width="250px"
+                        value="{user>/name}" />
+                    <Input
+                        id="pasw"
+                        placeholder="Password"
+                        type="Password"
+                        width="250px"
+                        value="{user>/password}" />
+                    <Button
+                        text="Login"
+                        type="Emphasized"
+                        width="250px"
+                        press="onLoginPress" />
+                    <MessageStrip
+                        text="{error>/login/loginError}"
+                        type="Error"
+                        showIcon="true"
+                        visible="{error>/login/showLoginError}"
+                        showCloseButton="true"
+                        class="sapUiMediumMarginBottom" />
+                </items>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

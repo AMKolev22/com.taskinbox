@@ -1,0 +1,241 @@
+<mvc:View
+    controllerName="taskInbox.controller.Manager"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Page title="Task Manager Dashboard">
+        <content>
+            <HBox
+                height="100%"
+                class="sapUiMediumMarginBegin"
+            >
+                <!-- Left Navigation Panel -->
+                <Panel
+                    headerText="Dashboard"
+                    width="300px"
+                    class="sapUiMediumMarginEnd sapUiMediumMarginTop"
+                >
+                    <content>
+                        <VBox class="sapUiMediumMargin">
+                            <VBox class="sapUiMediumMarginBottom">
+                                <Title
+                                    text="Task Overview"
+                                    level="H3"
+                                    design="Bold"
+                                    class="sapUiSmallMarginBottom sapUiMediumMarginTop"
+                                />
+                                <HBox alignItems="Center">
+                                    <Text
+                                        text="Pending Tasks: {taskModel>/pendingCount}"
+                                    />
+                                </HBox>
+                                <HBox alignItems="Center">
+                                    <Text
+                                        text="Vacation Requests: {taskModel>/vacationCount}"
+                                    />
+                                </HBox>
+                                <HBox alignItems="Center">
+                                    <Text
+                                        text="Equipment Requests: {taskModel>/equipmentCount}"
+                                    />
+                                </HBox>
+                                <HBox
+                                    alignItems="Center"
+                                    class="sapUiTinyMarginBottom"
+                                >
+                                    <Text
+                                        text="Travel Requests: {taskModel>/travelCount}"
+                                    />
+                                </HBox>
+                            </VBox>
+                            <VBox>
+                                <Button
+                                    text="View All Tasks"
+                                    width="100%"
+                                    class="sapUiTinyMarginBottom"
+                                    press=".onViewAllTasksPress"
+                                />
+                                <Button
+                                    text="Create A New Task"
+                                    type="Emphasized"
+                                    width="100%"
+                                    class="sapUiTinyMarginBottom"
+                                />
+                            </VBox>
+                        </VBox>
+                    </content>
+                </Panel>
+
+                <VBox
+                    class="sapUiLargeMarginTop sapUiMediumMarginEnd"
+                    width="100%"
+                >
+                    <Panel>
+                        <headerToolbar>
+                            <Toolbar>
+                                <Title text="Tasks Pending Approval" />
+                                <ToolbarSpacer />
+                                <Button
+                                    icon="sap-icon://refresh"
+                                    tooltip="Refresh Tasks"
+                                    press=".onRefreshTasksPress"
+                                    type="Transparent"
+                                />
+                            </Toolbar>
+                        </headerToolbar>
+                        <content>
+                            <HBox
+                                class="filter-bar"
+                                alignItems="Center"
+                            >
+                                <SearchField
+                                    placeholder="Search tasks..."
+                                    class="search-field"
+                                    value="{filterModel>/searchQuery}"
+                                    liveChange=".onSearchLiveChange"
+                                />
+                                <ComboBox
+                                    placeholder="Filter by Type"
+                                    class="filter-select"
+                                    selectedKey="{filterModel>/typeFilter}"
+                                    selectionChange=".onTypeFilterChange"
+                                >
+                                    <core:Item
+                                        key=""
+                                        text="All Types"
+                                    />
+                                    <core:Item
+                                        key="VACATION"
+                                        text="Vacation"
+                                    />
+                                    <core:Item
+                                        key="EQUIPMENT"
+                                        text="Equipment"
+                                    />
+                                    <core:Item
+                                        key="TRAVEL"
+                                        text="Travel"
+                                    />
+                                </ComboBox>
+                                <ComboBox
+                                    placeholder="Filter by Priority"
+                                    class="filter-select"
+                                    selectedKey="{filterModel>/priorityFilter}"
+                                    selectionChange=".onPriorityFilterChange"
+                                >
+                                    <core:Item
+                                        key=""
+                                        text="All Priorities"
+                                    />
+                                    <core:Item
+                                        key="LOW"
+                                        text="Low"
+                                    />
+                                    <core:Item
+                                        key="MEDIUM"
+                                        text="Medium"
+                                    />
+                                    <core:Item
+                                        key="HIGH"
+                                        text="High"
+                                    />
+                                    <core:Item
+                                        key="URGENT"
+                                        text="Urgent"
+                                    />
+                                </ComboBox>
+                                <Button
+                                    text="Clear Filters"
+                                    press=".onClearFiltersPress"
+                                    type="Transparent"
+                                />
+                            </HBox>
+
+                            <!-- Tasks Table -->
+                            <Table
+                                items="{path: 'taskModel>/filteredTasks'}"
+                                mode="None"
+                                growing="true"
+                                growingScrollToLoad="false"
+                                growingThreshold="20"
+                                class="sapUiResponsiveMargin"
+                            >
+                                <columns>
+                                    <Column width="15%">
+                                        <Text text="Employee" />
+                                    </Column>
+                                    <Column width="20%">
+                                        <Text text="Title" />
+                                    </Column>
+                                    <Column width="12%">
+                                        <Text text="Type" />
+                                    </Column>
+                                    <Column width="10%">
+                                        <Text text="Priority" />
+                                    </Column>
+                                    <Column width="12%">
+                                        <Text text="Due Date" />
+                                    </Column>
+                                    <Column width="12%">
+                                        <Text text="Created" />
+                                    </Column>
+                                    <Column width="19%">
+                                        <Text text="Actions" />
+                                    </Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem press=".onTaskPress">
+                                        <cells>
+                                            <Text
+                                                text="{taskModel>employee/name}"
+                                            />
+                                            <Text text="{taskModel>title}" />
+                                            <ObjectStatus
+                                                text="{taskModel>type}"
+                                                state="{path: 'taskModel>type', formatter: '.formatTypeState'}"
+                                            />
+                                            <ObjectStatus
+                                                text="{taskModel>priority}"
+                                                state="{path: 'taskModel>priority', formatter: '.formatPriorityState'}"
+                                            />
+                                            <Text
+                                                text="{path: 'taskModel>dueDate', formatter: '.formatDate'}"
+                                            />
+                                            <Text
+                                                text="{path: 'taskModel>createdAt', formatter: '.formatDate'}"
+                                            />
+                                            <HBox>
+                                                <Button
+                                                    icon="sap-icon://accept"
+                                                    type="Accept"
+                                                    class="sapUiSmallMarginEnd"
+                                                    press=".onTaskApprovePress"
+                                                    tooltip="Approve"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://decline"
+                                                    type="Reject"
+                                                    class="sapUiSmallMarginEnd"
+                                                    press=".onTaskRejectPress"
+                                                    tooltip="Reject"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://forward"
+                                                    type="Neutral"
+                                                    press=".onTaskForwardPress"
+                                                    tooltip="Forward"
+                                                />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </content>
+                    </Panel>
+                </VBox>
+            </HBox>
+        </content>
+    </Page>
+</mvc:View>

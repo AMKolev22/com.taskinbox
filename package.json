@@ -1,0 +1,22 @@
+{
+    "name": "com.TaskInbox.taskInbox",
+    "scripts": {
+        "build": "mbt build --mtar com.TaskInbox.taskInbox.mtar",
+        "build:workspaces": "npm run build --workspaces --if-present",
+        "deploy": "cf deploy mta_archives/com.TaskInbox.taskInbox.mtar --retries 0",
+        "lint": "npm run lint --workspaces --if-present",
+        "ui5lint": "npm run ui5lint --workspaces --if-present",
+        "start:taskInbox": "npm start --workspace taskInbox"
+    },
+    "dependencies": {
+        "@prisma/client": "^6.15.0",
+        "cors": "^2.8.5",
+        "mbt": "^1"
+    },
+    "workspaces": [
+        "taskInbox"
+    ],
+    "devDependencies": {
+        "prisma": "^6.15.0"
+    }
+}

@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:daddy@localhost:5432/sap-db?schema=public"
+}
+
+enum TaskType {
+  VACATION
+  EQUIPMENT
+  TRAVEL
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TaskStatus {
+  PENDING
+  APPROVED
+  DECLINED
+  FORWARDED
+}
+
+enum Role {
+  MANAGER
+  USER
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  name      String
+  role      Role
+  password  String
+  tasks     Task[]     @relation("EmployeeTasks")
+  decisions Decision[]
+
+  Task Task[] @relation("ManagerTasks")
+}
+
+model Task {
+  id              Int          @id @default(autoincrement())
+  type            TaskType
+  title           String
+  priority        TaskPriority
+  description     String?
+  dueDate         DateTime?
+  status          TaskStatus   @default(PENDING)
+  requestedAmount Decimal?
+  urgencyReason   String?
+ 
+
+  employeeId Int
+  employee   User @relation("EmployeeTasks", fields: [employeeId], references: [id])
+
+  assignedToId Int?
+  assignedTo   User? @relation("ManagerTasks", fields: [assignedToId], references: [id])
+
+  decisions Decision[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Decision {
+  id        Int        @id @default(autoincrement())
+  action    TaskStatus
+  comment   String?
+  createdAt DateTime   @default(now())
+
+  taskId Int
+  task   Task @relation(fields: [taskId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}

@@ -1,0 +1,102 @@
+{
+    "_version": "1.60.0",
+    "sap.app": {
+        "id": "taskInbox",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap-ux/fiori-freestyle-writer:basic",
+            "version": "0.21.10"
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.136.2",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "taskInbox.i18n.i18n"
+                }
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "async": true,
+                "viewPath": "taskInbox.view",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "clearControlAggregation": false
+            },
+            "routes": [
+                {
+                    "pattern": "login",
+                    "name": "login",
+                    "target": "Login"
+                },
+                {
+                    "pattern": "manager",
+                    "name": "manager",
+                    "target": "ManagerView"
+                }
+            ],
+            "targets": {
+                "ManagerView": {
+                    "viewName": "Manager",
+                    "viewLevel": 2
+                },
+                "Login": {
+                    "viewName": "Login",
+                    "viewLevel": 1
+                }
+            }
+        },
+        "rootView": {
+            "viewName": "taskInbox.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "App"
+        }
+    }
+}

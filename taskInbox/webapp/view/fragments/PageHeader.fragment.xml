@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Bar>
+        <contentLeft>
+            <Button 
+                icon="sap-icon://nav-back" 
+                press="onNavBack"
+                type="Transparent" />
+            <Title text="{i18n>pageTitle}" level="H1" />
+        </contentLeft>
+		<contentMiddle>
+			<Title text="{user>/name}" />
+		</contentMiddle>
+        <contentRight>
+            <Text text="{pageModel>/pageTitle}" />
+        </contentRight>
+    </Bar>
+</core:FragmentDefinition>

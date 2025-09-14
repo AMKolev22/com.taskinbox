@@ -1,0 +1,16 @@
+{
+  "generator-ui5-project": {
+    "namespaceUI5": "com.TaskInbox",
+    "projectName": "taskInbox",
+    "uimoduleName": "taskInbox",
+    "enableFPM": false,
+    "platform": "Static webserver",
+    "ui5Libs": "Local resources (SAPUI5)",
+    "newDir": false,
+    "initRepo": false,
+    "projectId": "com.TaskInbox.taskInbox",
+    "uimodules": [
+      "taskInbox"
+    ]
+  }
+}
