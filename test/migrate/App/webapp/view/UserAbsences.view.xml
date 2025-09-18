@@ -1,0 +1,178 @@
+<mvc:View
+    controllerName="App.controller.UserAbsences"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <SplitApp id="userAbsencesSplitApp" initialMaster="masterPage" initialDetail="detailPage">
+        <masterPages>
+            <Page id="masterPage" title="{i18n>dashboardHeader}">
+            <customHeader class="sapUiHideOnDesktop">
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <core:Fragment
+                            fragmentName="App.view.fragments.PageHeader"
+                            class="sapUiHideOnDesktop"
+                            type="XML" />
+                    </OverflowToolbar>
+                </customHeader>
+                <content>
+                    <core:Fragment
+                        fragmentName="App.view.fragments.Sidebar"
+                        type="XML" />
+                </content>
+            </Page>
+        </masterPages>
+        <detailPages>
+            <Page id="detailPage" title="{pageModel>/pageTitle}">
+                <customHeader>
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <Title text="{i18n>pageTitle}" level="H2" />
+                        <ToolbarSpacer />
+                        <core:Fragment
+                            fragmentName="App.view.fragments.PageHeader"
+                            class="sapUiHideOnPhone sapUiHideOnTable"
+                            type="XML" />
+                    </OverflowToolbar>
+                </customHeader>
+                <content>
+                    <VBox width="100%" class="sapUiMediumMarginTop">
+                        <Table
+                            id="absencesTable"
+                            items="{userAbsenceViewModel>/table/absences}"
+                            class="sapUiResponsiveMargin">
+                            <columns>
+                                <Column 
+                                    textWrapping="false"
+                                    importance="High">
+                                    <Text text="{i18n>type}" />
+                                </Column>
+                                <Column 
+                                    importance="Medium"
+                                    demandPopin="true"
+                                    popinDisplay="Inline"
+                                    minScreenWidth="Tablet">
+                                    <Text text="{i18n>fromDate}" />
+                                </Column>
+                                <Column 
+                                    importance="Medium"
+                                    demandPopin="true"
+                                    popinDisplay="Inline"
+                                    minScreenWidth="Tablet">
+                                    <Text text="{i18n>toDate}" />
+                                </Column>
+                                <Column 
+                                    importance="Medium"
+                                    demandPopin="true"
+                                    popinDisplay="Inline"
+                                    minScreenWidth="Desktop">
+                                    <Text text="{i18n>duration}" />
+                                </Column>
+                                <Column 
+                                    importance="High">
+                                    <Text text="{i18n>manager}" />
+                                </Column>
+                                <Column 
+                                    importance="Medium"
+                                    demandPopin="true"
+                                    popinDisplay="Inline"
+                                    minScreenWidth="Desktop">
+                                    <Text text="{i18n>confirmed}" />
+                                </Column>
+                                <Column 
+                                    importance="Medium"
+                                    demandPopin="true"
+                                    popinDisplay="Inline"
+                                    minScreenWidth="Desktop">
+                                    <Text text="{i18n>paid}" />
+                                </Column>
+                                <Column 
+                                    importance="High">
+                                    <Text text="{i18n>substitute}" />
+                                </Column>
+                                <Column 
+                                    importance="High"
+                                    demandPopin="true"
+                                    popinDisplay="Inline"
+                                    minScreenWidth="Phone">
+                                    <Text text="{i18n>actions}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text 
+                                            text="{path: 'userAbsenceViewModel>type', formatter: '.formatAbsenceType'}" 
+                                            wrapping="false"
+                                            maxLines="1"
+                                            class="sapUiNoWrap sapUiTextOverflowEllipsis" />
+                                        <Text text="{
+                                            path: 'userAbsenceViewModel>dateFrom',
+                                            type: 'sap.ui.model.odata.type.Date',
+                                            formatOptions: {
+                                                pattern: 'MMM dd, yyyy'
+                                            }
+                                        }" />
+                                        <Text text="{
+                                            path: 'userAbsenceViewModel>dateTo',
+                                            type: 'sap.ui.model.odata.type.Date',
+                                            formatOptions: {
+                                                pattern: 'MMM dd, yyyy'
+                                            }
+                                        }" />
+                                        <Text text="{userAbsenceViewModel>duration} days" />
+                                        <Text text="{userAbsenceViewModel>manager/name}" />
+                                        <ObjectStatus
+                                            text="{path: 'userAbsenceViewModel>status', formatter: '.formatStatus'}"
+                                            state="{
+                                                parts: [{
+                                                    path: 'userAbsenceViewModel>status'
+                                                }],
+                                                formatter: '.formatStatusState'
+                                            }" />
+                                        <Text text="{
+                                            parts: [{
+                                                path: 'userAbsenceViewModel>paid'
+                                            }],
+                                            formatter: '.formatPaidText'
+                                        }" />
+                                        <Text text="{userAbsenceViewModel>substitute/name}" />
+                                        <HBox>
+                                            <Button
+                                                icon="sap-icon://edit"
+                                                type="Transparent"
+                                                press="onEditAbsence"
+                                                tooltip="{i18n>editAbsence}"
+                                                enabled="{
+                                                    parts: [{
+                                                        path: 'userAbsenceViewModel>status'
+                                                    }],
+                                                    formatter: '.isEditable'
+                                                }"
+                                                class="sapUiTinyMarginEnd" />
+                                            <Button
+                                                icon="sap-icon://delete"
+                                                type="Transparent"
+                                                press="onDeleteAbsence"
+                                                tooltip="{i18n>deleteAbsence}"
+                                                enabled="{
+                                                    parts: [{
+                                                        path: 'userAbsenceViewModel>status'
+                                                    }],
+                                                    formatter: '.isEditable'
+                                                }" />
+                                        </HBox>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                        <BusyIndicator
+                            visible="{userAbsenceViewModel>/ui/loading}"
+                            class="sapUiMediumMargin" />
+                    </VBox>
+                </content>
+            </Page>
+        </detailPages>
+    </SplitApp>
+</mvc:View>

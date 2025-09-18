@@ -1,0 +1,154 @@
+<mvc:View
+    controllerName="App.controller.Manager"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    displayBlock="true"
+    height="100%"
+    busyIndicatorDelay="0">
+    <SplitApp id="managerSplitApp" initialMaster="masterPage" initialDetail="detailPage">
+        <masterPages>
+            <Page id="masterPage">
+            <customHeader class="sapUiHideOnDesktop">
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <core:Fragment
+                            fragmentName="App.view.fragments.PageHeader"
+                            class="sapUiHideOnDesktop"
+                            type="XML" />
+                    </OverflowToolbar>
+                </customHeader>
+                <content>
+                    <core:Fragment
+                        fragmentName="App.view.fragments.Sidebar"
+                        type="XML" />
+                </content>
+            </Page>
+        </masterPages>
+        <detailPages>
+            <Page id="detailPage">
+                <customHeader>
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <Title text="{i18n>pageTitle}" level="H2" />
+                        <ToolbarSpacer />
+                        <core:Fragment
+                            fragmentName="App.view.fragments.PageHeader"
+                            class="sapUiHideOnPhone sapUiHideOnTable"
+                            type="XML" />
+                    </OverflowToolbar>
+                </customHeader>
+                <content>
+                    <VBox  class="sapUiMediumMarginTop" width="100%">
+                        <Panel>
+                            <headerToolbar>
+                                <Toolbar>
+                                    <Title text="{i18n>teamAbsencesPendingTitle}" />
+                                    <ToolbarSpacer />
+                                    <Button
+                                        icon="sap-icon://refresh"
+                                        tooltip="{i18n>refreshPendingRequestsTooltip}"
+                                        press=".refreshPendingRequests"
+                                        type="Transparent" />
+                                </Toolbar>
+                            </headerToolbar>
+                            <content>
+                                <Table
+                                    items="{managerViewModel>/managedAbsences}"
+                                    mode="None"
+                                    growing="true"
+                                    growingScrollToLoad="false"
+                                    growingThreshold="20"
+                                    class="sapUiResponsiveMargin">
+                                    <columns>
+                                        <Column 
+                                            importance="High">
+                                            <Text text="{i18n>userIdColumn}" />
+                                        </Column>
+                                        <Column
+                                            importance="Medium"
+                                            demandPopin="true"
+                                            popinDisplay="Inline"
+                                            minScreenWidth="Tablet">
+                                            <Text text="{i18n>fromColumn}" />
+                                        </Column>
+                                        <Column
+                                            importance="Medium"
+                                            demandPopin="true"
+                                            popinDisplay="Inline"
+                                            minScreenWidth="Tablet">
+                                            <Text text="{i18n>toColumn}" />
+                                        </Column>
+                                        <Column 
+                                            importance="Medium"
+                                            demandPopin="true"
+                                            popinDisplay="Inline"
+                                            minScreenWidth="Desktop">
+                                            <Text text="{i18n>typeColumn}" />
+                                        </Column>
+                                        <Column
+                                            importance="Medium"
+                                            demandPopin="true"
+                                            popinDisplay="Inline"
+                                            minScreenWidth="Desktop">
+                                            <Text text="{i18n>daysColumn}" />
+                                        </Column>
+                                        <Column
+                                            importance="Medium"
+                                            demandPopin="true"
+                                            popinDisplay="Inline"
+                                            minScreenWidth="Desktop">
+                                            <Text text="{i18n>statusColumn}" />
+                                        </Column>
+                                        <Column 
+                                            importance="High">
+                                            <Text text="{i18n>actionsColumn}" />
+                                        </Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem>
+                                            <cells>
+                                                <Text text="{managerViewModel>user/name}" />
+                                                <Text text="{
+                                                    path: 'managerViewModel>dateFrom',
+                                                    formatter: '.formatDate'
+                                                }" />
+                                                <Text text="{
+                                                    path: 'managerViewModel>dateTo',
+                                                    formatter: '.formatDate'
+                                                }" />
+                                                <Text text="{managerViewModel>type}" />
+                                                <Text text="{managerViewModel>duration} days" />
+                                                <ObjectStatus
+                                                    text="{
+                                                        path: 'managerViewModel>confirmed',
+                                                        formatter: '.formatStatus'
+                                                    }"
+                                                    state="{
+                                                        path: 'managerViewModel>confirmed',
+                                                        formatter: '.formatStatusState'
+                                                    }" />
+                                                <HBox>
+                                                    <Button
+                                                        icon="sap-icon://accept"
+                                                        class="sapUiSmallMarginEnd"
+                                                        press=".onAbsenceApproveButtonPress" />
+                                                    <Button
+                                                        icon="sap-icon://decline"
+                                                        press=".onAbsenceRejectButtonPress" />
+                                                </HBox>
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </content>
+                        </Panel>
+                        <core:Fragment
+                            fragmentName="App.view.fragments.ActivityLog"
+                            type="XML" />
+                    </VBox>
+                </content>
+            </Page>
+        </detailPages>
+    </SplitApp>
+</mvc:View>

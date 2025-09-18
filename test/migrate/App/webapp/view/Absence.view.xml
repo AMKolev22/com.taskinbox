@@ -1,0 +1,202 @@
+<mvc:View
+    controllerName="App.controller.Absence"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <SplitApp id="absenceSplitApp" initialMaster="masterPage" initialDetail="detailPage">
+        <masterPages>
+            <Page id="masterPage">
+            <customHeader class="sapUiHideOnDesktop">
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <core:Fragment
+                            fragmentName="App.view.fragments.PageHeader"
+                            class="sapUiHideOnDesktop"
+                            type="XML" />
+                    </OverflowToolbar>
+                </customHeader>
+                <content>
+                    <core:Fragment
+                        fragmentName="App.view.fragments.Sidebar"
+                        type="XML" />
+                </content>
+            </Page>
+        </masterPages>
+        <detailPages>
+            <Page id="detailPage" title="{pageModel>/pageTitle}">
+                 <customHeader>
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <Title text="{i18n>pageTitle}" level="H2" />
+                        <ToolbarSpacer />
+                        <core:Fragment
+                            fragmentName="App.view.fragments.PageHeader"
+                            class="sapUiHideOnPhone sapUiHideOnTable"
+                            type="XML" />
+                    </OverflowToolbar>
+                </customHeader>
+                <content>
+                    <ScrollContainer
+                        height="100%"
+                        width="100%"
+                        horizontal="false"
+                        vertical="true">
+                        <VBox class="sapUiMediumMarginTop">
+                            <f:SimpleForm
+                                id="absenceForm"
+                                editable="true"
+                                layout="ResponsiveGridLayout"
+                                labelSpanXL="3"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="4"
+                                emptySpanL="4"
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="1"
+                                columnsL="1"
+                                columnsM="1"
+                                singleContainerFullSize="false">
+                                <f:content>
+                                    <Label
+                                        text="{i18n>absenceType}"
+                                        required="true" />
+                                    <Select
+                                        id="absenceTypeSelect"
+                                        selectedKey="{/type}"
+                                        valueState="{/validation/absenceTypeState}"
+                                        valueStateText="{/validation/absenceTypeMessage}"
+                                        width="100%"
+                                        change="onAbsenceTypeChange">
+                                        <core:Item
+                                            key="PLANNED"
+                                            text="{i18n>plannedLeave}" />
+                                        <core:Item
+                                            key="SICK_LEAVE"
+                                            text="{i18n>sickLeave}" />
+                                    </Select>
+                                    <Label
+                                        text="{i18n>fromDate}"
+                                        required="true" />
+                                    <DatePicker
+                                        id="dateFromPicker"
+                                        value="{/dateFrom}"
+                                        valueState="{/validation/dateFromState}"
+                                        valueStateText="{/validation/dateFromMessage}"
+                                        valueFormat="yyyy-MM-dd"
+                                        displayFormat="MMM dd, yyyy"
+                                        change="onDateChange"
+                                        width="100%" />
+                                    <Label
+                                        text="{i18n>toDate}"
+                                        required="true" />
+                                    <DatePicker
+                                        id="dateToPicker"
+                                        value="{/dateTo}"
+                                        valueState="{/validation/dateToState}"
+                                        valueStateText="{/validation/dateToMessage}"
+                                        valueFormat="yyyy-MM-dd"
+                                        displayFormat="MMM dd, yyyy"
+                                        change="onDateChange"
+                                        width="100%" />
+                                    <Label text="{i18n>duration}" />
+                                    <Text
+                                        id="durationText"
+                                        text="{
+                                            parts: ['/dateFrom', '/dateTo'],
+                                            formatter: '.formatDuration'
+                                        }"
+                                        class="sapUiMediumMarginBottom" />
+                                    <Label
+                                        text="{i18n>manager}"
+                                        required="true" />
+                                    <Select
+                                        id="managerSelect"
+                                        width="100%"
+                                        selectedKey="{/managerId}"
+                                        valueState="{/validation/managerState}"
+                                        valueStateText="{/validation/managerMessage}"
+                                        change="onManagerChange"
+                                        items="{usersModel>/managers}">
+                                        <core:Item
+                                            key="{usersModel>id}"
+                                            text="{usersModel>name}" />
+                                    </Select>
+                                    <Label
+                                        text="{i18n>paidLeave}"
+                                        visible="{
+                                            path: '/type',
+                                            formatter: '.formatShowPaidToggle'
+                                        }" />
+                                    <Switch
+                                        id="paidSwitch"
+                                        state="{
+                                            parts: ['/type', '/paid'],
+                                            formatter: '.formatPaidValue'
+                                        }"
+                                        customTextOn="{i18n>text.yes}"
+                                        customTextOff="{i18n>text.no}"
+                                        visible="{
+                                            path: '/type',
+                                            formatter: '.formatShowPaidToggle'
+                                        }" />
+                                    <Label
+                                        text="{i18n>substitute}"
+                                        required="{
+                                            parts: ['/type', '/dateFrom', '/dateTo'],
+                                            formatter: '.formatSubstituteRequired'
+                                        }"
+                                        visible="{
+                                            parts: ['/type', '/dateFrom', '/dateTo'],
+                                            formatter: '.formatSubstituteRequired'
+                                        }" />
+                                    <Select
+                                        id="substituteSelect"
+                                        width="100%"
+                                        selectedKey="{/substituteId}"
+                                        valueState="{/validation/substituteState}"
+                                        valueStateText="{/validation/substituteMessage}"
+                                        change="onSubstituteChange"
+                                        visible="{
+                                            parts: ['/type', '/dateFrom', '/dateTo'],
+                                            formatter: '.formatShowSubstitute'
+                                        }"
+                                        items="{usersModel>/users}">
+                                        <core:Item
+                                            key="{usersModel>id}"
+                                            text="{usersModel>name}" />
+                                    </Select>
+                                    <Label text="{i18n>comments}" />
+                                    <TextArea
+                                        id="commentTextArea"
+                                        value="{/comment}"
+                                        rows="4"
+                                        width="100%"
+                                        placeholder="{i18n>commentsPlaceholder}"
+                                        maxLength="500" />
+                                </f:content>
+                            </f:SimpleForm>
+                            <HBox
+                                justifyContent="End"
+                                class="sapUiMediumMarginTop">
+                                <Button
+                                    text="{i18n>cancel}"
+                                    press="onCancel"
+                                    class="sapUiMediumMarginEnd" />
+                                <Button
+                                    id="submitButton"
+                                    text="{i18n>submitRequest}"
+                                    type="Emphasized"
+                                    press="onSubmit" />
+                            </HBox>
+                        </VBox>
+                    </ScrollContainer>
+                </content>
+            </Page>
+        </detailPages>
+    </SplitApp>
+</mvc:View>

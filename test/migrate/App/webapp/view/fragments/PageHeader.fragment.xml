@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <OverflowToolbar>
+        <ToolbarSpacer />
+        <Title text="{user>/name}" level="H4" />
+        <Button 
+            type="Transparent"
+            icon="sap-icon://log"
+            visible="{pageModel>/logOutVisible}"
+            press="onPressRoute"
+            data:route="login" />
+    </OverflowToolbar>
+</core:FragmentDefinition>

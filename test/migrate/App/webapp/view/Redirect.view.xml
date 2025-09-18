@@ -1,0 +1,11 @@
+<mvc:View
+	controllerName="App.controller.Redirect"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+	displayBlock="true"
+	height="100%"
+	busyIndicatorDelay="0"
+>
+<Title text="Redirecting... " level="H1" />
+</mvc:View>

@@ -1,0 +1,44 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Panel
+        headerText="{i18n>activityLogHeader}"
+        class="sapUiMediumMarginTop">
+        <headerToolbar>
+            <Toolbar>
+                <Title text="{i18n>activityLogTitle}" />
+                <ToolbarSpacer />
+                <Button
+                    icon="sap-icon://refresh"
+                    tooltip="{i18n>refreshActivityLogTooltip}"
+                    press=".refreshActivityLog"
+                    type="Transparent" />
+            </Toolbar>
+        </headerToolbar>
+        <content>
+            <List
+                items="{user>/ActivityLog}"
+                noDataText="{i18n>noRecentActivityText}"
+                class="sapUiResponsiveMargin">
+                <StandardListItem
+                    title="{
+                        path: 'user>action',
+                        formatter: '.formatAction'
+                    }"
+                    description="{
+                        parts: [
+                            'user>details',
+                            'user>action',
+                            'user>absenceId'
+                        ],
+                        formatter: '.formatActivityDescription'
+                    }"
+                    info="{
+                        path: 'user>createdAt',
+                        formatter: '.formatTimestamp'
+                    }"
+                    iconInset="false" />
+            </List>
+        </content>
+    </Panel>
+</core:FragmentDefinition>

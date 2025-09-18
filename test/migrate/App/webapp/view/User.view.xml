@@ -1,0 +1,119 @@
+<mvc:View
+    controllerName="App.controller.User"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:unified="sap.ui.unified"
+    xmlns="sap.m"
+    displayBlock="true"
+    height="100%"
+    busyIndicatorDelay="0">
+    <SplitApp id="userSplitApp" initialMaster="masterPage" initialDetail="detailPage">
+        <masterPages>
+            <Page id="masterPage">
+             <customHeader class="sapUiHideOnDesktop">
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <core:Fragment
+                            fragmentName="App.view.fragments.PageHeader"
+                            class="sapUiHideOnDesktop"
+                            type="XML" />
+                    </OverflowToolbar>
+                </customHeader>
+                <content>
+                    <core:Fragment
+                        fragmentName="App.view.fragments.Sidebar"
+                        type="XML" />
+                </content>
+            </Page>
+        </masterPages>
+        <detailPages>
+            <Page id="detailPage" title="{pageModel>/pageTitle}">
+             <customHeader>
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <Title text="{i18n>pageTitle}" level="H2" />
+                        <ToolbarSpacer />
+                        <core:Fragment
+                            fragmentName="App.view.fragments.PageHeader"
+                            class="sapUiHideOnPhone sapUiHideOnTable"
+                            type="XML" />
+                    </OverflowToolbar>
+                </customHeader>
+                <content>
+                    <VBox class="sapUiMediumMarginTop" width="100%">
+                        <Panel
+                            headerText="{i18n>absenceCalendarHeader}"
+                            expandable="false"
+                            expanded="true">
+                            <content>
+                                <VBox class="sapUiSmallMargin" width="100%">
+                                    <HBox
+                                        renderType="Bare"
+                                        width="100%"
+                                        alignItems="Start"
+                                        justifyContent="Start"
+                                        wrap="Wrap"
+                                        class="sapUiMediumMarginBottom"
+                                        id="calendarHBox" >
+                                        <VBox
+                                            class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
+                                            width="auto">
+                                            <Title
+                                                text="{i18n>yourCalendarTitle}"
+                                                level="H3"
+                                                styleClass="sapUiSmallMarginBottom"
+                                                id="idYourCalendarTitle" />
+                                            <unified:Calendar id="absenceCalendar" />
+                                        </VBox>
+                                        <VBox
+                                            class="sapUiResponsiveMargin"
+                                            width="280px">
+                                            <Title
+                                                text="{i18n>colleaguesTitle}"
+                                                level="H4"
+                                                styleClass="sapUiSmallMarginBottom" />
+                                            <VBox class="sapUiSmallMargin">
+                                                <SearchField
+                                                    id="colleaguesSearchField"
+                                                    placeholder="{i18n>searchColleaguesPlaceholder}"
+                                                    search=".onColleaguesSearch"
+                                                    liveChange=".onColleaguesSearch"
+                                                    class="sapUiSmallMarginBottom"
+                                                    width="100%" />
+                                                <List
+                                                    id="colleaguesList"
+                                                    items="{userViewModel>/users}"
+                                                    class="sapUiNoContentPadding"
+                                                    showNoData="false">
+                                                    <CustomListItem>
+                                                        <content>
+                                                            <CheckBox
+                                                                text="{userViewModel>name}"
+                                                                selected="{
+                                                                    parts: [{
+                                                                        path: 'userViewModel>id'
+                                                                    }, {
+                                                                        path: 'userViewModel>/subscriptions'
+                                                                    }],
+                                                                    formatter: '.isSubscribed'
+                                                                }"
+                                                                select=".onColleagueSelect"
+                                                                class="sapUiTinyMarginBottom" />
+                                                        </content>
+                                                    </CustomListItem>
+                                                </List>
+                                            </VBox>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+                            </content>
+                        </Panel>
+                        <core:Fragment
+                            fragmentName="App.view.fragments.ActivityLog"
+                            type="XML" />
+                    </VBox>
+                </content>
+            </Page>
+        </detailPages>
+    </SplitApp>
+</mvc:View>

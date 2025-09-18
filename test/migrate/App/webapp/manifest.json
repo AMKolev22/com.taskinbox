@@ -80,11 +80,30 @@
                     "target": "Login"
                 },
                 {
-                    "pattern": "dashboard",
-                    "name": "dashboard",
-                    "target": "Dashboard"
+                    "pattern": "manager",
+                    "name": "manager",
+                    "target": "ManagerView"
+                },
+                {
+                    "pattern": "user",
+                    "name": "user",
+                    "target": "UserView"
+                },
+                {
+                    "pattern": "absence",
+                    "name": "absence",
+                    "target": "AbsenceView"
+                },
+                {
+                    "pattern": "your-absences",
+                    "name": "your-absences",
+                    "target": "YourAbsencesView"
+                }, 
+                {
+                    "pattern": "redirect",
+                    "name": "redirect",
+                    "target": "RedirectView"
                 }
-                
             ],
             "targets": {
                 "App": {
@@ -95,11 +114,27 @@
                     "viewName": "Login",
                     "viewLevel": 1
                 },
-                "Dashboard": {
-                    "viewName": "Dashboard",
+                "UserView": {
+                    "viewName": "User",
                     "viewLevel": 2
+                },
+                "ManagerView": {
+                    "viewName": "Manager",
+                    "viewLevel": 2
+                },
+                "AbsenceView": {
+                    "viewName": "Absence",
+                    "viewLevel": 2
+                },
+                "YourAbsencesView": {
+                    "viewName": "UserAbsences",
+                    "viewLevel": 3
+                },
+                "RedirectView": {
+                    "viewName": "Redirect",
+                    "viewLevel": 1
                 }
-           }
+            }
         },
         "rootView": {
             "viewName": "App.view.App",

@@ -1,0 +1,17 @@
+{
+    "name": "com.employee.leave.EmployeeLeave",
+    "scripts": {
+        "build": "mbt build --mtar com.employee.leave.EmployeeLeave.mtar",
+        "build:workspaces": "npm run build --workspaces --if-present",
+        "deploy": "cf deploy mta_archives/com.employee.leave.EmployeeLeave.mtar --retries 0",
+        "lint": "npm run lint --workspaces --if-present",
+        "ui5lint": "npm run ui5lint --workspaces --if-present",
+        "start:App": "npm start --workspace App"
+    },
+    "dependencies": {
+        "mbt": "^1"
+    },
+    "workspaces": [
+        "App"
+    ]
+}

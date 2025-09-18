@@ -1,0 +1,142 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog
+        id="editAbsenceDialog"
+        title="{i18n>editAbsenceRequest}"
+        contentWidth="600px"
+        contentHeight="auto"
+        draggable="true"
+        resizable="true"
+        open="{:= ${userAbsenceViewModel>/ui/editDialogOpen} }"
+        afterClose="onEditDialogClosed">
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <f:SimpleForm
+                    id="editAbsenceForm"
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="4"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="4"
+                    emptySpanL="4"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="1"
+                    columnsL="1"
+                    columnsM="1"
+                    singleContainerFullSize="false">
+                    <f:content>
+                        <Label
+                            text="{i18n>absenceType}"
+                            required="true" />
+                        <Text
+                            id="absenceTypeText"
+                            text="{userAbsenceViewModel>/edit/type}" />
+                        <Label
+                            text="{i18n>fromDate}"
+                            required="true" />
+                        <DatePicker
+                            id="editDateFromPicker"
+                            value="{userAbsenceViewModel>/edit/dateFrom}"
+                            valueFormat="yyyy-MM-dd"
+                            displayFormat="MMM dd, yyyy"
+                            change="onDateChange"
+                            width="100%"
+                            valueState="{userAbsenceViewModel>/edit/validation/dateFromState}"
+                            valueStateText="{userAbsenceViewModel>/edit/validation/dateFromMessage}" />
+                        <Label
+                            text="{i18n>toDate}"
+                            required="true" />
+                        <DatePicker
+                            id="editDateToPicker"
+                            value="{userAbsenceViewModel>/edit/dateTo}"
+                            valueFormat="yyyy-MM-dd"
+                            displayFormat="MMM dd, yyyy"
+                            change="onDateChange"
+                            width="100%"
+                            valueState="{userAbsenceViewModel>/edit/validation/dateToState}"
+                            valueStateText="{userAbsenceViewModel>/edit/validation/dateToMessage}" />
+                        <Label text="{i18n>duration}" />
+                        <Text
+                            id="editDurationText"
+                            text="{userAbsenceViewModel>/edit/duration} days"
+                            class="sapUiMediumMarginBottom" />
+                        <Label
+                            text="{i18n>manager}"
+                            required="true" />
+                        <Text
+                            id="editManagerText"
+                            text="{userAbsenceViewModel>/edit/manager/name}" />
+                        <Label text="{i18n>status}"  />
+                        <ObjectStatus
+                                text="{
+                                    parts: [{
+                                        path: 'userAbsenceViewModel>/edit/status'
+                                    }],
+                                    formatter: '.formatStatus'
+                                }"
+                            state="{
+                                parts: [{
+                                    path: 'userAbsenceViewModel>/edit/status'
+                                }],
+                                formatter: '.formatStatusState'}" />
+                       <Label
+                        text="{i18n>paidLeave}"
+                        visible="{= ${userAbsenceViewModel>/edit/type} === 'PLANNED'}" />
+                    <Switch
+                        id="editPaidSwitch"
+                        state="{userAbsenceViewModel>/edit/paid}"
+                        customTextOn="{i18n>text.yes}"
+                        customTextOff="{i18n>text.no}"
+                        visible="{= ${userAbsenceViewModel>/edit/type} === 'PLANNED'}" />
+                    <Label
+                        text="{i18n>substitute}"
+                        required="{= ${userAbsenceViewModel>/edit/type} === 'PLANNED'}"
+                        visible="{= ${userAbsenceViewModel>/edit/type} === 'PLANNED'}" />
+                    <Select
+                        id="editSubstituteSelect"
+                        selectedKey="{userAbsenceViewModel>/edit/substituteId}"
+                        width="100%"
+                        visible="{= ${userAbsenceViewModel>/edit/type} === 'PLANNED'}"
+                        valueState="{userAbsenceViewModel>/edit/validation/substituteState}"
+                        valueStateText="{userAbsenceViewModel>/edit/validation/substituteMessage}"
+                        items="{userAbsenceViewModel>/lookup/substitutes}">
+                            <core:Item
+                                key="{userAbsenceViewModel>id}"
+                                text="{userAbsenceViewModel>name}" />
+                        </Select>
+                        <Label text="{i18n>comments}" />
+                        <TextArea
+                            id="editCommentTextArea"
+                            value="{userAbsenceViewModel>/edit/comment}"
+                            rows="4"
+                            width="100%"
+                            placeholder="{i18n>commentsPlaceholder}"
+                            maxLength="500" />
+                    </f:content>
+                </f:SimpleForm>
+                <MessageStrip
+                    id="editValidationMessage"
+                    text="{userAbsenceViewModel>/ui/validationMessage}"
+                    type="Error"
+                    visible="{userAbsenceViewModel>/ui/showValidationMessage}"
+                    class="sapUiMediumMarginTop" />
+            </VBox>
+        </content>
+        <buttons>
+            <Button
+                text="{i18n>cancel}"
+                press="onCancelEdit" />
+            <Button
+                id="updateButton"
+                text="{i18n>update}"
+                type="Emphasized"
+                press="onUpdateAbsence" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

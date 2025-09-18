@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "App/controller/Base.controller",
@@ -14,7 +13,9 @@ sap.ui.define([
         },
 
         onRouteMatched: function () {
-            console.log("test");
+            this.pageModel.setProperty("/pageTitle", this.getResourceBundle().getText("loginTitle"));
+            this.pageModel.setProperty("/navBackVisible", false);
+            this.pageModel.setProperty("/logOutVisible", false);
         },
 
         onLoginPress: async function () {
@@ -41,13 +42,13 @@ sap.ui.define([
                 } else {
                     if (data.user) {
                         const user = data.user;
-                        console.log(user);
-                        // this.oRouter.navTo("redirect");
+                        user.managedAbsences = user.managedAbsences.filter(absence => !absence.confirmed);
+                        this.oRouter.navTo("redirect");
                         this.oModel.setData({
                             ...user,
+                            pendingApproval: user.managedAbsences,
                             isManager: user.role === "MANAGER"
                         });
-                        this.oRouter.navTo("dashboard");
                     }
                 }
             } catch (error) {

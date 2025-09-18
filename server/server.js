@@ -34,6 +34,11 @@ app.post("/login", async (req, res) => {
                     name: name || "New User",
                     password,
                     role: "USER" // default role
+                },
+                include: {
+                  employeeTasks: true,
+                  managedTasks: true,
+                  decisions: true
                 }
             });
             return res.status(201).json({ message: "User created", user });
@@ -48,8 +53,8 @@ app.post("/login", async (req, res) => {
         const fullUser = await prisma.user.findUnique({
             where: { email },
             include: {
-                tasks: true,   // Tasks assigned to user
-                Task: true,    // Tasks managed by user
+                managedTasks: true,
+                employeeTasks: true,
                 decisions: true
             }
         });

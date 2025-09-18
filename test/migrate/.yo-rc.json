@@ -1,0 +1,16 @@
+{
+  "generator-ui5-project": {
+    "namespaceUI5": "com.employee.leave",
+    "projectName": "EmployeeLeave",
+    "uimoduleName": "App",
+    "enableFPM": false,
+    "platform": "Static webserver",
+    "ui5Libs": "Local resources (SAPUI5)",
+    "newDir": false,
+    "initRepo": false,
+    "projectId": "com.employee.leave.EmployeeLeave",
+    "uimodules": [
+      "App"
+    ]
+  }
+}

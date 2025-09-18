@@ -11,8 +11,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-   url = "postgresql://firsttask:Employee_1@employee-task.postgres.database.azure.com:5432/employee-task?schema=public"
+  url      = "postgresql://postgres:daddy@localhost:5432/workTwo?schema=public"
 }
+
 
 enum TaskType {
   VACATION
@@ -45,10 +46,10 @@ model User {
   name      String
   role      Role
   password  String
-  tasks     Task[]     @relation("EmployeeTasks")
-  decisions Decision[]
-
-  Task Task[] @relation("ManagerTasks")
+  
+  employeeTasks   Task[]     @relation("EmployeeTasks")
+  managedTasks    Task[]     @relation("ManagerTasks")
+  decisions       Decision[]
 }
 
 model Task {
@@ -86,3 +87,6 @@ model Decision {
   userId Int
   user   User @relation(fields: [userId], references: [id])
 }
+
+
+

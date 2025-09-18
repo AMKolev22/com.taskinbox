@@ -1,0 +1,75 @@
+<c:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+>
+    <Panel
+        headerText="{pageModel>/pageTitle}"
+        width="300px"
+        class="sapUiMediumMarginEnd sapUiMediumMarginTop"
+    >
+        <headerToolbar>
+            <Toolbar>
+                <Button
+                    icon="sap-icon://nav-back"
+                    type="Transparent"
+                    press="onNavBack"
+                    visible="{pageModel>/navBackVisible}"
+                    tooltip="{i18n>navBack}"
+                />
+                <Title text="{pageModel>/pageTitle}" />
+            </Toolbar>
+        </headerToolbar>
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <VBox class="sapUiMediumMarginBottom">
+                    <Title
+                        text="{i18n>absenceOverviewTitle}"
+                        level="H3"
+                        class="sapUiSmallMarginBottom sapUiMediumMarginTop"
+                    />
+                    <HBox alignItems="Center">
+                        <Text text="{i18n>absenceLabel}: {user>/absences/length}" />
+                    </HBox>
+                    <HBox
+                        alignItems="Center"
+                        visible="{user>/isManager}" >
+                        <Text text="{i18n>managedAbsencesLabel}: {user>/managedAbsences/length}" />
+                    </HBox>
+                    <HBox
+                        alignItems="Center"
+                        class="sapUiTinyMarginBottom"
+                        visible="{user>/isManager}" >
+                        <Text text="{i18n>pendingApprovalLabel}: {user>/pendingApproval/length}" />
+                    </HBox>
+                    <HBox
+                        alignItems="Center"   >
+                        <Button text="Home" icon="sap-icon://home" type="Transparent"
+                        press="onPressRoute"
+                        data:route="redirect" />
+                    </HBox>
+
+                </VBox>
+                <VBox>
+                    <Title
+                        text="{i18n>absenceSideBarTitle}"
+                        level="H3"
+                        class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
+                    <Button
+                        text="{i18n>viewYourAbsencesButton}"
+                        width="100%"
+                        class="sapUiTinyMarginBottom"
+                        press="onPressRoute"
+                        data:route="your-absences" />
+                    <Button
+                        text="{i18n>requestNewAbsenceButton}"
+                        type="Emphasized"
+                        width="100%"
+                        class="sapUiTinyMarginBottom"
+                        press="onPressRoute"
+                        data:route="absence" />
+                </VBox>
+            </VBox>
+        </content>
+    </Panel>
+</c:FragmentDefinition>

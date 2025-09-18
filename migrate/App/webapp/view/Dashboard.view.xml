@@ -1,0 +1,623 @@
+<mvc:View
+    controllerName="App.controller.Dashboard"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true"
+    height="100%"
+    busyIndicatorDelay="0"
+>
+    <SplitApp
+        id="managerSplitApp"
+        initialMaster="masterPage"
+        initialDetail="detailPage"
+    >
+        <masterPages>
+            <Page id="masterPage">
+                <!-- <customHeader class="sapUiHideOnDesktop">
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <core:Fragment
+                            fragmentName="App.view.fragments.PageHeader"
+                            class="sapUiHideOnDesktop"
+                            type="XML" />
+                    </OverflowToolbar>
+                </customHeader> -->
+                <content>
+                    <core:Fragment
+                        fragmentName="App.view.fragments.Sidebar"
+                        type="XML"
+                    />
+                </content>
+            </Page>
+        </masterPages>
+        <detailPages>
+            <Page
+                id="detailPage"
+                title="Task Inbox"
+                showNavButton="false"
+            >
+                <content>
+                    <VBox
+                        class="sapUiMediumMarginTop"
+                        height="auto"
+                    >
+                        <Panel
+                            id="statsPanel"
+                            headerText="Overview"
+                            class="sapUiResponsiveMargin sapUiFormContainer"
+                        >
+                            <content>
+                                <FlexBox
+                                    direction="{device>/system/phone ? 'Column' : 'Row'}"
+                                    justifyContent="SpaceAround"
+                                    alignItems="Center"
+                                    class="sapUiMediumMargin"
+                                    wrap="{= ${device>/system/phone} ? noWrap : Wrap }"
+                                >
+                                    <VBox
+                                        alignItems="Center"
+                                        class="sapUiSmallMargin"
+                                    >
+                                        <Text
+                                            text="12"
+                                            class="sapUiLargeText sapUiTextBold"
+                                        />
+                                        <Label text="Total Tasks" />
+                                    </VBox>
+                                    <VBox
+                                        alignItems="Center"
+                                        class="sapUiSmallMargin"
+                                    >
+                                        <Text
+                                            text="8"
+                                            class="sapUiLargeText sapUiTextBold"
+                                        />
+                                        <Label text="Pending" />
+                                    </VBox>
+                                    <VBox
+                                        alignItems="Center"
+                                        class="sapUiSmallMargin"
+                                    >
+                                        <Text
+                                            text="3"
+                                            class="sapUiLargeText sapUiTextBold"
+                                        />
+                                        <Label text="Urgent" />
+                                    </VBox>
+                                </FlexBox>
+                            </content>
+                        </Panel>
+                        <Panel
+                            id="controlsPanel"
+                            class="sapUiResponsiveMargin sapUiFormContainer" 
+                            headerText="Filter Tasks"
+                        >
+                            <content>
+                                <VBox class="sapUiMediumMargin">
+                                    <SearchField
+                                        id="searchField"
+                                        placeholder="Search..."
+                                        width="45%"
+                                        class="sapUiSmallMarginBottom"
+                                    />
+                                    <FlexBox
+                                        direction="{device>/system/phone ? 'Column' : 'Row'}"
+                                        alignItems="{device>/system/phone ? 'Stretch' : 'End'}"
+                                        height="auto"
+                                        wrap="{= ${device>/system/phone} ? noWrap : Wrap }"
+                                    >
+                                        <VBox class="sapUiSmallMarginEnd sapUiSmallMarginBottom" >
+                                            <Label
+                                                text="Type:"
+                                                class="sapUiTinyMarginBottom"
+                                            />
+                                            <Select
+                                                id="typeFilter"
+                                                width="{device>/system/phone ? '100%' : '150px'}"
+                                            >
+                                                <core:Item
+                                                    key=""
+                                                    text="All Types"
+                                                />
+                                                <core:Item
+                                                    key="VACATION"
+                                                    text="Vacation"
+                                                />
+                                                <core:Item
+                                                    key="EQUIPMENT"
+                                                    text="Equipment"
+                                                />
+                                                <core:Item
+                                                    key="TRAVEL"
+                                                    text="Travel"
+                                                />
+                                            </Select>
+                                        </VBox>
+                                        <VBox
+                                            class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
+                                            height="50%"
+                                        >
+                                            <Label
+                                                text="Priority:"
+                                                class="sapUiTinyMarginBottom"
+                                            />
+                                            <Select
+                                                id="priorityFilter"
+                                                width="{device>/system/phone ? '100%' : '150px'}"
+                                            >
+                                                <core:Item
+                                                    key=""
+                                                    text="All Priorities"
+                                                />
+                                                <core:Item
+                                                    key="LOW"
+                                                    text="Low"
+                                                />
+                                                <core:Item
+                                                    key="MEDIUM"
+                                                    text="Medium"
+                                                />
+                                                <core:Item
+                                                    key="HIGH"
+                                                    text="High"
+                                                />
+                                                <core:Item
+                                                    key="URGENT"
+                                                    text="Urgent"
+                                                />
+                                            </Select>
+                                        </VBox>
+                                        <VBox class="sapUiSmallMarginBottom">
+                                            <Label
+                                                text=" "
+                                                class="sapUiTinyMarginBottom"
+                                                visible="{!device>/system/phone}"
+                                            />
+                                            <Button
+                                                id="sortButton"
+                                                text="Sort"
+                                                icon="sap-icon://sort"
+                                                width="{device>/system/phone ? '100%' : 'auto'}"
+                                            />
+                                        </VBox>
+                                    </FlexBox>
+                                </VBox>
+                            </content>
+                        </Panel>
+                        <!-- Tasks Table Panel with Fixed Height -->
+                        <Panel
+                            id="tasksPanel"
+                            headerText="Pending Tasks"
+                            class="sapUiResponsiveMargin"
+                            height="100%"
+                        >
+                            <content>
+                                <Table
+                                    id="tasksTable"
+                                    mode="None"
+                                    fixedLayout="false"
+                                    alternateRowColors="true"
+                                    class="sapUiSizeCompact"
+                                    visibleRowCountMode="Auto"
+                                >
+                                    <columns>
+                                        <Column
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true"
+                                        >
+                                            <Text text="Type" />
+                                        </Column>
+                                        <Column
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true"
+                                        >
+                                            <Text text="Title" />
+                                        </Column>
+                                        <Column>
+                                            <Text text="Priority" />
+                                        </Column>
+                                        <Column>
+                                            <Text text="Employee" />
+                                        </Column>
+                                        <Column
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true"
+                                        >
+                                            <Text text="Due Date" />
+                                        </Column>
+                                        <Column
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true"
+                                        >
+                                            <Text text="Created" />
+                                        </Column>
+                                        <Column
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true"
+                                        >
+                                            <Text text="Amount" />
+                                        </Column>
+                                        <Column>
+                                            <Text text="Actions" />
+                                        </Column>
+                                    </columns>
+                                    <items>
+                                        <!-- Sample Task 1 -->
+                                        <ColumnListItem>
+                                            <ObjectStatus
+                                                text="VACATION"
+                                                state="Success"
+                                            />
+                                            <Text
+                                                text="Summer Vacation Request"
+                                                class="sapUiTextBold"
+                                            />
+                                            <ObjectStatus
+                                                text="HIGH"
+                                                state="Error"
+                                            />
+                                            <VBox>
+                                                <Text
+                                                    text="John Smith"
+                                                    class="sapUiTextBold"
+                                                />
+                                                <Text
+                                                    text="john.smith@company.com"
+                                                    class="sapUiTextSmall"
+                                                />
+                                            </VBox>
+                                            <Text text="Jul 1, 2024" />
+                                            <Text text="Jun 15, 2024" />
+                                            <Text text="-" />
+                                            <HBox>
+                                                <Button
+                                                    icon="sap-icon://accept"
+                                                    type="Accept"
+                                                    tooltip="Approve"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://decline"
+                                                    type="Reject"
+                                                    tooltip="Decline"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://forward"
+                                                    tooltip="Forward"
+                                                />
+                                            </HBox>
+                                        </ColumnListItem>
+                                        <!-- Sample Task 2 -->
+                                        <ColumnListItem>
+                                            <ObjectStatus
+                                                text="EQUIPMENT"
+                                                state="Warning"
+                                            />
+                                            <Text
+                                                text="New Laptop Request"
+                                                class="sapUiTextBold"
+                                            />
+                                            <ObjectStatus
+                                                text="MEDIUM"
+                                                state="Warning"
+                                            />
+                                            <VBox>
+                                                <Text
+                                                    text="Sarah Johnson"
+                                                    class="sapUiTextBold"
+                                                />
+                                                <Text
+                                                    text="sarah.johnson@company.com"
+                                                    class="sapUiTextSmall"
+                                                />
+                                            </VBox>
+                                            <Text text="Jun 30, 2024" />
+                                            <Text text="Jun 20, 2024" />
+                                            <Text text="$1,500.00" />
+                                            <HBox>
+                                                <Button
+                                                    icon="sap-icon://accept"
+                                                    type="Accept"
+                                                    tooltip="Approve"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://decline"
+                                                    type="Reject"
+                                                    tooltip="Decline"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://forward"
+                                                    tooltip="Forward"
+                                                />
+                                            </HBox>
+                                        </ColumnListItem>
+                                        <!-- Sample Task 3 -->
+                                        <ColumnListItem>
+                                            <ObjectStatus
+                                                text="TRAVEL"
+                                                state="Information"
+                                            />
+                                            <Text
+                                                text="Client Meeting Travel"
+                                                class="sapUiTextBold"
+                                            />
+                                            <ObjectStatus
+                                                text="URGENT"
+                                                state="Error"
+                                            />
+                                            <VBox>
+                                                <Text
+                                                    text="Mike Wilson"
+                                                    class="sapUiTextBold"
+                                                />
+                                                <Text
+                                                    text="mike.wilson@company.com"
+                                                    class="sapUiTextSmall"
+                                                />
+                                            </VBox>
+                                            <Text text="Jun 25, 2024" />
+                                            <Text text="Jun 22, 2024" />
+                                            <Text text="$800.00" />
+                                            <HBox>
+                                                <Button
+                                                    icon="sap-icon://accept"
+                                                    type="Accept"
+                                                    tooltip="Approve"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://decline"
+                                                    type="Reject"
+                                                    tooltip="Decline"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://forward"
+                                                    tooltip="Forward"
+                                                />
+                                            </HBox>
+                                        </ColumnListItem>
+                                        <!-- Sample Task 4 -->
+                                        <ColumnListItem>
+                                            <ObjectStatus
+                                                text="VACATION"
+                                                state="Success"
+                                            />
+                                            <Text
+                                                text="Christmas Holiday Request"
+                                                class="sapUiTextBold"
+                                            />
+                                            <ObjectStatus
+                                                text="LOW"
+                                                state="Success"
+                                            />
+                                            <VBox>
+                                                <Text
+                                                    text="Emma Davis"
+                                                    class="sapUiTextBold"
+                                                />
+                                                <Text
+                                                    text="emma.davis@company.com"
+                                                    class="sapUiTextSmall"
+                                                />
+                                            </VBox>
+                                            <Text text="Dec 1, 2024" />
+                                            <Text text="Jun 18, 2024" />
+                                            <Text text="-" />
+                                            <HBox>
+                                                <Button
+                                                    icon="sap-icon://accept"
+                                                    type="Accept"
+                                                    tooltip="Approve"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://decline"
+                                                    type="Reject"
+                                                    tooltip="Decline"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://forward"
+                                                    tooltip="Forward"
+                                                />
+                                            </HBox>
+                                        </ColumnListItem>
+                                        <!-- Sample Task 5 -->
+                                        <ColumnListItem>
+                                            <ObjectStatus
+                                                text="EQUIPMENT"
+                                                state="Warning"
+                                            />
+                                            <Text
+                                                text="Standing Desk Request"
+                                                class="sapUiTextBold"
+                                            />
+                                            <ObjectStatus
+                                                text="LOW"
+                                                state="Success"
+                                            />
+                                            <VBox>
+                                                <Text
+                                                    text="David Brown"
+                                                    class="sapUiTextBold"
+                                                />
+                                                <Text
+                                                    text="david.brown@company.com"
+                                                    class="sapUiTextSmall"
+                                                />
+                                            </VBox>
+                                            <Text text="Jul 15, 2024" />
+                                            <Text text="Jun 19, 2024" />
+                                            <Text text="$450.00" />
+                                            <HBox>
+                                                <Button
+                                                    icon="sap-icon://accept"
+                                                    type="Accept"
+                                                    tooltip="Approve"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://decline"
+                                                    type="Reject"
+                                                    tooltip="Decline"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://forward"
+                                                    tooltip="Forward"
+                                                />
+                                            </HBox>
+                                        </ColumnListItem>
+                                        <!-- Sample Task 6 -->
+                                        <ColumnListItem>
+                                            <ObjectStatus
+                                                text="TRAVEL"
+                                                state="Information"
+                                            />
+                                            <Text
+                                                text="Conference Attendance"
+                                                class="sapUiTextBold"
+                                            />
+                                            <ObjectStatus
+                                                text="HIGH"
+                                                state="Error"
+                                            />
+                                            <VBox>
+                                                <Text
+                                                    text="Lisa Anderson"
+                                                    class="sapUiTextBold"
+                                                />
+                                                <Text
+                                                    text="lisa.anderson@company.com"
+                                                    class="sapUiTextSmall"
+                                                />
+                                            </VBox>
+                                            <Text text="Aug 10, 2024" />
+                                            <Text text="Jun 21, 2024" />
+                                            <Text text="$1,200.00" />
+                                            <HBox>
+                                                <Button
+                                                    icon="sap-icon://accept"
+                                                    type="Accept"
+                                                    tooltip="Approve"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://decline"
+                                                    type="Reject"
+                                                    tooltip="Decline"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://forward"
+                                                    tooltip="Forward"
+                                                />
+                                            </HBox>
+                                        </ColumnListItem>
+                                        <!-- Sample Task 7 -->
+                                        <ColumnListItem>
+                                            <ObjectStatus
+                                                text="EQUIPMENT"
+                                                state="Warning"
+                                            />
+                                            <Text
+                                                text="Monitor Upgrade"
+                                                class="sapUiTextBold"
+                                            />
+                                            <ObjectStatus
+                                                text="MEDIUM"
+                                                state="Warning"
+                                            />
+                                            <VBox>
+                                                <Text
+                                                    text="Tom Miller"
+                                                    class="sapUiTextBold"
+                                                />
+                                                <Text
+                                                    text="tom.miller@company.com"
+                                                    class="sapUiTextSmall"
+                                                />
+                                            </VBox>
+                                            <Text text="Jul 5, 2024" />
+                                            <Text text="Jun 23, 2024" />
+                                            <Text text="$300.00" />
+                                            <HBox>
+                                                <Button
+                                                    icon="sap-icon://accept"
+                                                    type="Accept"
+                                                    tooltip="Approve"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://decline"
+                                                    type="Reject"
+                                                    tooltip="Decline"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://forward"
+                                                    tooltip="Forward"
+                                                />
+                                            </HBox>
+                                        </ColumnListItem>
+                                        <!-- Sample Task 8 -->
+                                        <ColumnListItem>
+                                            <ObjectStatus
+                                                text="VACATION"
+                                                state="Success"
+                                            />
+                                            <Text
+                                                text="Medical Leave Request"
+                                                class="sapUiTextBold"
+                                            />
+                                            <ObjectStatus
+                                                text="URGENT"
+                                                state="Error"
+                                            />
+                                            <VBox>
+                                                <Text
+                                                    text="Anna Garcia"
+                                                    class="sapUiTextBold"
+                                                />
+                                                <Text
+                                                    text="anna.garcia@company.com"
+                                                    class="sapUiTextSmall"
+                                                />
+                                            </VBox>
+                                            <Text text="Jun 28, 2024" />
+                                            <Text text="Jun 24, 2024" />
+                                            <Text text="-" />
+                                            <HBox>
+                                                <Button
+                                                    icon="sap-icon://accept"
+                                                    type="Accept"
+                                                    tooltip="Approve"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://decline"
+                                                    type="Reject"
+                                                    tooltip="Decline"
+                                                    class="sapUiTinyMarginEnd"
+                                                />
+                                                <Button
+                                                    icon="sap-icon://forward"
+                                                    tooltip="Forward"
+                                                />
+                                            </HBox>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </content>
+                        </Panel>
+                    </VBox>
+                </content>
+            </Page>
+        </detailPages>
+    </SplitApp>
+</mvc:View>

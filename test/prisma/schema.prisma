@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://firsttask:Employee_1@employee-task.postgres.database.azure.com:5432/employee-task?schema=public"
+}
+
+model Absence {
+  id           Int         @id @default(autoincrement())
+  type         AbsenceType
+  dateFrom     DateTime
+  dateTo       DateTime
+  userId       Int
+  user         User        @relation("UserAbsences", fields: [userId], references: [id])
+  managerId    Int
+  manager      User        @relation("ManagedAbsences", fields: [managerId], references: [id])
+  paid         Boolean?
+  substituteId Int?
+  substitute   User?       @relation("SubstituteAbsences", fields: [substituteId], references: [id])
+  comment      String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  confirmed    Boolean     @default(false)
+
+  ActivityLog ActivityLog[]
+}
+
+model User {
+  id              Int        @id @default(autoincrement())
+  name            String     @unique @default("") @db.VarChar(255)
+  email           String     @unique @default("") @db.VarChar(255)
+  password        String    
+  role            UserRole
+
+  absences        Absence[] @relation("UserAbsences")        
+  managedAbsences Absence[] @relation("ManagedAbsences")
+  substituteFor   Absence[] @relation("SubstituteAbsences")
+
+  subscribedTo    User[]    @relation("UserSubscriptions") 
+  subscribers     User[]    @relation("UserSubscriptions")
+
+  ActivityLog ActivityLog[]
+}
+
+model ActivityLog {
+  id          Int       @id @default(autoincrement())
+  
+  actorId     Int
+  actor       User      @relation(fields: [actorId], references: [id])
+  
+  absenceId   Int?
+  absence     Absence?  @relation(fields: [absenceId], references: [id])
+  
+  action      ActivityAction
+  details     String? 
+  
+  createdAt   DateTime  @default(now())
+}
+
+enum ActivityAction {
+  CREATE_ABSENCE
+  UPDATE_ABSENCE
+  APPROVE_ABSENCE
+  REJECT_ABSENCE
+  ASSIGN_SUBSTITUTE
+  CANCEL_ABSENCE
+}
+
+
+enum AbsenceType {
+  PLANNED
+  SICK_LEAVE
+}
+
+enum UserRole {
+  EMPLOYEE
+  MANAGER
+}
+
+
