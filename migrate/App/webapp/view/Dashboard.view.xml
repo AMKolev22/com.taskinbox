@@ -94,7 +94,7 @@
                             headerText="Filter Tasks"
                         >
                             <content>
-                                <VBox class="sapUiMediumMargin">
+                                <VBox class="sapUiMediumMarginTop">
                                     <SearchField
                                         id="searchField"
                                         placeholder="Search..."
