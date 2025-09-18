@@ -8,33 +8,16 @@ sap.ui.define([
 	return Controller.extend("App.controller.Dashboard", {
         onInit: function () {
             this.oSplitApp = null;
+            var oData = {
+                taskStats: [
+                    { value: "12", label: "Total Tasks" },
+                    { value: "8", label: "Pending" },
+                    { value: "3", label: "Urgent" }
+                ]
+            };
+        
+            var oModel = new sap.ui.model.json.JSONModel(oData);
+            this.getView().setModel(oModel, "stats");
         },
-        onToggleMaster: function () {
-            if (this.oSplitApp) {
-                if (this.oSplitApp.isMasterShown()) {
-                    this.oSplitApp.hideMaster();
-                } else {
-                    this.oSplitApp.showMaster();
-                }
-            }
-        },
-
-        /**
-         * Shows the master area of the SplitApp
-         */
-        onShowMaster: function (oSplitApp) {
-            if (this.oSplitApp) {
-                this.oSplitApp.showMaster();
-            }
-        },
-
-        /**
-         * Hides the master area of the SplitApp
-         */
-        onHideMaster: function () {
-            if (this.oSplitApp) {
-                this.oSplitApp.hideMaster();
-            }
-        }
 	});
 });

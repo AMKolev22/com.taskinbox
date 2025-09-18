@@ -7,7 +7,7 @@ sap.ui.define(
 
     return BaseController.extend("App.controller.App", {
       onInit: function () {
-        this.getOwnerComponent().getRouter().navTo("login");
+        this.getOwnerComponent().getRouter().navTo("dashboard");
       }
     });
   }
