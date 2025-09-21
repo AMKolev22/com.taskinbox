@@ -10,19 +10,9 @@
     <SplitApp
         id="managerSplitApp"
         initialMaster="masterPage"
-        initialDetail="detailPage"
-    >
+        initialDetail="detailPage" >
         <masterPages>
             <Page id="masterPage">
-                <!-- <customHeader class="sapUiHideOnDesktop">
-                    <OverflowToolbar>
-                        <ToolbarSpacer />
-                        <core:Fragment
-                            fragmentName="App.view.fragments.PageHeader"
-                            class="sapUiHideOnDesktop"
-                            type="XML" />
-                    </OverflowToolbar>
-                </customHeader> -->
                 <content>
                     <core:Fragment
                         fragmentName="App.view.fragments.Sidebar"
@@ -34,8 +24,7 @@
         <detailPages>
             <Page
                 id="detailPage"
-                title="Task Inbox"
-            >
+                title="Task Inbox" >
                 <content>
                     <VBox
                         class="sapUiMediumMarginTop"
@@ -86,8 +75,7 @@
                         <Panel
                             id="controlsPanel"
                             class="sapUiMediumMarginTop" 
-                            headerText="Filter Tasks"
-                        >
+                            headerText="Filter Tasks" >
                             <content>
                                 <VBox class="sapUiSmallMarginTop">
                                     <SearchField
@@ -110,7 +98,7 @@
                                             <Select
                                                 id="typeFilter"
                                                 width="{device>/system/phone ? '100%' : '150px'}"
-                                            >
+                                                change="onTypeSelect" >
                                                 <core:Item
                                                     key=""
                                                     text="All Types"
@@ -140,6 +128,8 @@
                                             <Select
                                                 id="priorityFilter"
                                                 width="{device>/system/phone ? '100%' : '150px'}"
+                                                change="onPrioritySelect"
+                                                
                                             >
                                                 <core:Item
                                                     key=""
@@ -162,19 +152,6 @@
                                                     text="Urgent"
                                                 />
                                             </Select>
-                                        </VBox>
-                                        <VBox class="sapUiSmallMarginBottom">
-                                            <Label
-                                                text=" "
-                                                class="sapUiTinyMarginBottom"
-                                                visible="{!device>/system/phone}"
-                                            />
-                                            <Button
-                                                id="sortButton"
-                                                text="Sort"
-                                                icon="sap-icon://sort"
-                                                width="{device>/system/phone ? '100%' : 'auto'}"
-                                            />
                                         </VBox>
                                     </FlexBox>
                                 </VBox>
@@ -265,13 +242,11 @@
                                             <HBox>
                                                 <Button
                                                     icon="sap-icon://accept"
-                                                    type="Accept"
                                                     tooltip="Approve"
                                                     class="sapUiTinyMarginEnd"
                                                 />
                                                 <Button
                                                     icon="sap-icon://decline"
-                                                    type="Reject"
                                                     tooltip="Decline"
                                                     class="sapUiTinyMarginEnd"
                                                 />
