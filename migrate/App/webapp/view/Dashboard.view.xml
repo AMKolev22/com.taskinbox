@@ -10,7 +10,8 @@
     <SplitApp
         id="managerSplitApp"
         initialMaster="masterPage"
-        initialDetail="detailPage" >
+        initialDetail="detailPage"
+    >
         <masterPages>
             <Page id="masterPage">
                 <content>
@@ -24,58 +25,77 @@
         <detailPages>
             <Page
                 id="detailPage"
-                title="Task Inbox" >
+                title="Task Inbox"
+            >
                 <content>
                     <VBox
                         class="sapUiMediumMarginTop"
-                        height="auto" >
+                        height="auto"
+                    >
                         <Panel
                             id="statsPanel"
                             headerText="Overview"
                             class="sapUiHideOnPhone"
-                            width="45%">
+                            width="45%"
+                        >
                             <content>
                                 <FlexBox
-                                direction="{device>/system/phone ? 'Column' : 'Row'}"
-                                justifyContent="SpaceBetween"
-                                alignItems="Center"
-                                class="sapUiMediumMargin"
-                                wrap="{= ${device>/system/phone} ? 'NoWrap' : 'Wrap' }"
-                                items="{stats>/taskStats}">
-                                <items>
-                                    <FlexBox direction="Column" alignItems="Center">
-                                        <Text text="{stats>value}" class="sapUiLargeText sapUiTextBold" />
-                                        <Label text="{stats>label}" />
-                                    </FlexBox>
-                                </items>
+                                    direction="{device>/system/phone ? 'Column' : 'Row'}"
+                                    justifyContent="SpaceBetween"
+                                    alignItems="Center"
+                                    class="sapUiMediumMargin"
+                                    wrap="{= ${device>/system/phone} ? 'NoWrap' : 'Wrap' }"
+                                    items="{stats>/taskStats}"
+                                >
+                                    <items>
+                                        <FlexBox
+                                            direction="Column"
+                                            alignItems="Center"
+                                        >
+                                            <Text
+                                                text="{stats>value}"
+                                                class="sapUiLargeText sapUiTextBold"
+                                            />
+                                            <Label text="{stats>label}" />
+                                        </FlexBox>
+                                    </items>
                                 </FlexBox>
                             </content>
                         </Panel>
                         <Panel
                             id="statsPanelDesktop"
                             headerText="Overview"
-                            class="sapUiHideOnDesktop">
+                            class="sapUiHideOnDesktop"
+                        >
                             <content>
                                 <FlexBox
-                                direction="{device>/system/phone ? 'Column' : 'Row'}"
-                                justifyContent="SpaceBetween"
-                                alignItems="Center"
-                                class="sapUiMediumMargin"
-                                wrap="{= ${device>/system/phone} ? 'NoWrap' : 'Wrap' }"
-                                items="{stats>/taskStats}">
-                                <items>
-                                    <FlexBox direction="Column" alignItems="Center">
-                                        <Text text="{stats>value}" class="sapUiLargeText sapUiTextBold" />
-                                        <Label text="{stats>label}" />
-                                    </FlexBox>
-                                </items>
+                                    direction="{device>/system/phone ? 'Column' : 'Row'}"
+                                    justifyContent="SpaceBetween"
+                                    alignItems="Center"
+                                    class="sapUiMediumMargin"
+                                    wrap="{= ${device>/system/phone} ? 'NoWrap' : 'Wrap' }"
+                                    items="{stats>/taskStats}"
+                                >
+                                    <items>
+                                        <FlexBox
+                                            direction="Column"
+                                            alignItems="Center"
+                                        >
+                                            <Text
+                                                text="{stats>value}"
+                                                class="sapUiLargeText sapUiTextBold"
+                                            />
+                                            <Label text="{stats>label}" />
+                                        </FlexBox>
+                                    </items>
                                 </FlexBox>
                             </content>
                         </Panel>
                         <Panel
                             id="controlsPanel"
-                            class="sapUiMediumMarginTop" 
-                            headerText="Filter Tasks" >
+                            class="sapUiMediumMarginTop"
+                            headerText="Filter Tasks"
+                        >
                             <content>
                                 <VBox class="sapUiSmallMarginTop">
                                     <SearchField
@@ -83,6 +103,7 @@
                                         placeholder="Search..."
                                         width="45%"
                                         class="sapUiSmallMarginBottom"
+                                        liveChange="onSearchFieldChange"
                                     />
                                     <FlexBox
                                         direction="{device>/system/phone ? 'Column' : 'Row'}"
@@ -90,7 +111,7 @@
                                         height="auto"
                                         wrap="{= ${device>/system/phone} ? noWrap : Wrap }"
                                     >
-                                        <VBox class="sapUiSmallMarginEnd sapUiSmallMarginBottom" >
+                                        <VBox class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
                                             <Label
                                                 text="Type:"
                                                 class="sapUiTinyMarginBottom"
@@ -98,7 +119,8 @@
                                             <Select
                                                 id="typeFilter"
                                                 width="{device>/system/phone ? '100%' : '150px'}"
-                                                change="onTypeSelect" >
+                                                change="onTypeSelect"
+                                            >
                                                 <core:Item
                                                     key=""
                                                     text="All Types"
@@ -129,7 +151,6 @@
                                                 id="priorityFilter"
                                                 width="{device>/system/phone ? '100%' : '150px'}"
                                                 change="onPrioritySelect"
-                                                
                                             >
                                                 <core:Item
                                                     key=""
@@ -170,6 +191,7 @@
                                     alternateRowColors="true"
                                     class="sapUiSizeCompact"
                                     visibleRowCountMode="Auto"
+                                    items="{/vacationRequests}"
                                 >
                                     <columns>
                                         <Column
@@ -215,44 +237,47 @@
                                     <items>
                                         <ColumnListItem>
                                             <ObjectStatus
-                                                text="VACATION"
-                                                state="Success"
+                                                text="{type}"
+                                                state="{typeState}"
                                             />
                                             <Text
-                                                text="Summer Vacation Request"
+                                                text="{title}"
                                                 class="sapUiTextBold"
                                             />
                                             <ObjectStatus
-                                                text="HIGH"
-                                                state="Error"
+                                                text="{priority}"
+                                                state="{priorityState}"
                                             />
                                             <VBox>
                                                 <Text
-                                                    text="John Smith"
+                                                    text="{employee/name}"
                                                     class="sapUiTextBold"
                                                 />
                                                 <Text
-                                                    text="john.smith@company.com"
+                                                    text="{employee/email}"
                                                     class="sapUiTextSmall"
                                                 />
                                             </VBox>
-                                            <Text text="Jul 1, 2024" />
-                                            <Text text="Jun 15, 2024" />
-                                            <Text text="-" />
+                                            <Text text="{startDate}" />
+                                            <Text text="{requestDate}" />
+                                            <Text text="{duration}" />
                                             <HBox>
                                                 <Button
                                                     icon="sap-icon://accept"
                                                     tooltip="Approve"
                                                     class="sapUiTinyMarginEnd"
+                                                    press="onApprove"
                                                 />
                                                 <Button
                                                     icon="sap-icon://decline"
                                                     tooltip="Decline"
                                                     class="sapUiTinyMarginEnd"
+                                                    press="onDecline"
                                                 />
                                                 <Button
                                                     icon="sap-icon://forward"
                                                     tooltip="Forward"
+                                                    press="onForward"
                                                 />
                                             </HBox>
                                         </ColumnListItem>
