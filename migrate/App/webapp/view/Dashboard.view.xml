@@ -8,7 +8,7 @@
     busyIndicatorDelay="0"
 >
     <SplitApp
-        id="managerSplitApp"
+        id="dashboardSplitApp"
         initialMaster="masterPage"
         initialDetail="detailPage"
     >

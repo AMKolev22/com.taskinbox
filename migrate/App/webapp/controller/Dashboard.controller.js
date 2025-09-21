@@ -18,6 +18,7 @@ sap.ui.define([
             };
             var oStatsModel = new sap.ui.model.json.JSONModel(oStatsData);
             this.getView().setModel(oStatsModel, "stats");
+            this.SplitApp = this.byId("dashboardSplitApp");
             this.oMainData = {
                 vacationRequests: [
                     {
@@ -62,6 +63,7 @@ sap.ui.define([
 
             this.oFilteredModel = new sap.ui.model.json.JSONModel(structuredClone(this.oMainData));
             this.getView().setModel(this.oFilteredModel);
+            this.SplitApp.setMasterButtonText(" ");
 
         },
 
