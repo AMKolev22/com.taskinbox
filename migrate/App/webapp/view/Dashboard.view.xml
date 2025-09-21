@@ -35,7 +35,7 @@
                         <Panel
                             id="statsPanel"
                             headerText="Overview"
-                            class="sapUiHideOnPhone"
+                            class="sapUiHideOnPhone sapUiHideOnTablet"
                             width="45%"
                         >
                             <content>
